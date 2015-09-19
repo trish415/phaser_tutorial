@@ -1,0 +1,1 @@
+This folder contains all files for the Phaser Tutorial on making a basic game.
