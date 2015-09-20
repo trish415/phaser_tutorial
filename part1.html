@@ -26,6 +26,7 @@ function preload() {
 var player;
 var cursors;
 var platforms;
+var stars;
 
 
 function create() {
@@ -67,6 +68,18 @@ function create() {
     player.animations.add('left', [0, 1, 2, 3], 10, true);
     player.animations.add('right', [5, 6, 7, 8], 10, true);
 
+    //add stars to collect
+    stars = game.add.group();
+    stars.enableBody = true;
+
+    //add 12 and have gravity/bounce
+    for (var i = 0; i < 12; i++)
+    {
+    	var star = stars.create(i*70, 0, 'star');
+        star.body.gravity.y = 6;
+        star.body.bounce.y = 0.7 + Math.random()*0.2;
+    }
+
     //add control
     cursors = game.input.keyboard.createCursorKeys();
 
@@ -76,6 +89,10 @@ function create() {
 function update() {
 	//land on the ground
 	game.physics.collide(player, platforms);
+    game.physics.collide(stars, platforms);
+
+	//check if player found star
+	game.physics.overlap(player, stars, collectStar, null, this);
 
 	//reset player x velocity
 	player.body.velocity.x = 0;
@@ -106,6 +123,10 @@ function update() {
     {
     	player.body.velocity.y = -350;
     }
+}
+
+function collectStar (player, star){
+	star.kill();
 }
 
 </script>
